@@ -1,0 +1,32 @@
+.custom-property-marker {
+  @apply relative size-5 rounded-full border-[1px] px-2 text-primary-foreground transition ease-out;
+
+  &:not(.custom-property-marker__favorite) {
+    @apply border-foreground bg-primary;
+  }
+
+  &__favorite {
+    @apply border-red-500 bg-red-500;
+  }
+
+  &__details-view {
+    @apply relative h-auto w-auto min-w-10 rounded-sm border-none px-2 py-1 text-center text-sm shadow-none;
+
+    &.custom-property-marker__favorite::after {
+      @apply border-t-red-500 #{!important};
+    }
+
+    &::after {
+      @apply border-t-8 border-solid border-t-primary;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      content: "";
+      height: 0;
+      left: 50%;
+      position: absolute;
+      top: 100%;
+      transform: translate(-50%);
+      width: 0;
+    }
+  }
+}
