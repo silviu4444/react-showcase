@@ -15,6 +15,8 @@ import { i18nSupported } from "./shared/constants/i18n.constants.ts";
 import { defaultUIState } from "./shared/constants/ui.constants.ts";
 import { getUIStateFromLocalStorage } from "./shared/utils/local-storage.utils.ts";
 
+// TODO lazy load the translations
+
 i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
   lng: getUIStateFromLocalStorage()?.language || defaultUIState.language,

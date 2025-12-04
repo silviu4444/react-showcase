@@ -10,6 +10,6 @@ const ProtectedRoute: React.FC<Props> = ({
   children,
   isAllowed,
   navigateTo
-}) => (!isAllowed ? <Navigate to={navigateTo} /> : children);
+}) => (isAllowed ? children : <Navigate to={navigateTo} />);
 
 export default ProtectedRoute;
