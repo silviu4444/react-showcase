@@ -5,7 +5,9 @@ export const ENDPOINTS = {
     LOCK_USER: (userEmail: string) => `admin/lock-user/byEmail/${userEmail}`
   },
   MODERATOR: {
-    PROPERTIES_TO_CHECK: "moderator/properties-to-check"
+    PROPERTIES_TO_CHECK: "moderator/properties-to-check",
+    SUBMIT_APPROVAL: (approves: boolean, pId: string) =>
+      `property/${approves ? "approve" : "deny"}/${pId}`
   },
   AUTH: {
     LOGIN: "auth/login",

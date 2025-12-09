@@ -13,6 +13,7 @@ import {
 import { PropertyTypeDef } from "@/shared/interfaces/property/property.interfaces";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import usePropertyApprovalMutation from "../../hooks/use-property-approval-mutation";
 
 type PropertyToApproveItemProps = {
   data: PropertyTypeDef;
@@ -21,6 +22,8 @@ type PropertyToApproveItemProps = {
 const PropertyToApproveItem: FC<PropertyToApproveItemProps> = ({ data }) => {
   const [t] = useTranslation();
   const { formatPropertyTitle } = useFormatPropertyTitle();
+  const { mutate, isPending } = usePropertyApprovalMutation();
+
   return (
     <Card>
       <CardHeader>
@@ -28,7 +31,7 @@ const PropertyToApproveItem: FC<PropertyToApproveItemProps> = ({ data }) => {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {data.photos.map(({ publicId }) => (
             <PropertyImageItem
               className="rounded-lg object-contain"
@@ -47,9 +50,20 @@ const PropertyToApproveItem: FC<PropertyToApproveItemProps> = ({ data }) => {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between gap-2">
-        <Button variant="destructive">{t("deny")}</Button>
+        <Button
+          variant="destructive"
+          disabled={isPending}
+          onClick={() => mutate({ approves: false, pId: data.id })}
+        >
+          {t("deny")}
+        </Button>
 
-        <Button>{t("approve")}</Button>
+        <Button
+          onClick={() => mutate({ approves: true, pId: data.id })}
+          disabled={isPending}
+        >
+          {t("approve")}
+        </Button>
       </CardFooter>
     </Card>
   );

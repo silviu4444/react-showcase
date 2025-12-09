@@ -14,6 +14,16 @@ const PropertiesToApproveView = () => {
     return <TryAgainButton onRetry={refetch} />;
   }
 
+  if (!data.length) {
+    return (
+      <div className="flex h-[70dvh] flex-col items-center justify-center gap-2">
+        <p className="flex items-center gap-1 text-center">
+          No properties to approve/deny at this time
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {data.map((property) => (
