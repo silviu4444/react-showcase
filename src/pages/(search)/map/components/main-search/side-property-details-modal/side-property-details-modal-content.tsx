@@ -1,5 +1,10 @@
 import usePreviewProperties from "@/pages/(search)/map/hooks/use-preview-properties";
 import { usePropertyDetailsModal } from "@/pages/(search)/map/hooks/use-property-details-modal";
+import {
+  Choose,
+  Otherwise,
+  When
+} from "@/shared/components/conditional-rendering";
 import DrawerModalContentContainer from "@/shared/components/ui/drawer-modal/drawer-modal-content-container";
 import {
   deviceMatcherMap,
@@ -59,27 +64,30 @@ const SidePropertyDetailsModalContent: React.FC<
   return (
     <>
       <DrawerModalContentContainer className="mb-4">
-        {selectionId ? (
-          <SidePropertyDetailsMobile
-            propertyId={selectionId}
-            onBack={onBack}
-            onTitleReady={onTitleLoaded}
-          />
-        ) : (
-          <div className="h-full overflow-y-auto" ref={ref}>
-            <SidePropertyView
-              currentPage={page}
-              data={data}
-              error={(error as AxiosError<ErrorDto>)?.response?.data}
-              isError={isError}
-              isFetching={isFetching}
-              isPlaceholderData={isPlaceholderData}
-              onItemClicked={onItemClicked}
-              refetch={refetch}
-              setCurrentPage={setPage}
+        <Choose>
+          <When condition={selectionId}>
+            <SidePropertyDetailsMobile
+              propertyId={selectionId}
+              onBack={onBack}
+              onTitleReady={onTitleLoaded}
             />
-          </div>
-        )}
+          </When>
+          <Otherwise>
+            <div className="h-full overflow-y-auto" ref={ref}>
+              <SidePropertyView
+                currentPage={page}
+                data={data}
+                error={(error as AxiosError<ErrorDto>)?.response?.data}
+                isError={isError}
+                isFetching={isFetching}
+                isPlaceholderData={isPlaceholderData}
+                onItemClicked={onItemClicked}
+                refetch={refetch}
+                setCurrentPage={setPage}
+              />
+            </div>
+          </Otherwise>
+        </Choose>
       </DrawerModalContentContainer>
     </>
   );

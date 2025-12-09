@@ -5,6 +5,7 @@ import { cn } from "@/shared/lib/utils";
 import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Button } from "../ui/button";
+import { Choose, Otherwise, When } from "../conditional-rendering";
 
 type AddToFavoriteButtonProps = {
   propertyId: string;
@@ -52,11 +53,14 @@ const AddToFavoriteButton: FC<AddToFavoriteButtonProps> = ({
       disabled={isPending || disabled}
       onClick={addToFavorite}
     >
-      {_isFavorite ? (
-        <FaHeart className="text-red-400 transition duration-300 group-hover:scale-125" />
-      ) : (
-        <FaRegHeart className="transition duration-300 group-hover:scale-125" />
-      )}
+      <Choose>
+        <When condition={_isFavorite}>
+          <FaHeart className="text-red-400 transition duration-300 group-hover:scale-125" />
+        </When>
+        <Otherwise>
+          <FaRegHeart className="transition duration-300 group-hover:scale-125" />
+        </Otherwise>
+      </Choose>
     </Button>
   );
 };

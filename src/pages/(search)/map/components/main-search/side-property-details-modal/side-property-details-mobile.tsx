@@ -54,14 +54,12 @@ const SidePropertyDetailsMobile: React.FC<Props> = ({
   }
 
   return (
-    <>
-      <div className="flex h-full flex-col">
-        <div className="h-full overflow-y-auto">
-          {closeIcon}
-          <PropertyDetailsContent property={data!} />
-        </div>
+    <div className="flex h-full flex-col">
+      <div className="h-full overflow-y-auto">
+        {closeIcon}
+        <PropertyDetailsContent property={data!} />
       </div>
-    </>
+    </div>
   );
 };
 

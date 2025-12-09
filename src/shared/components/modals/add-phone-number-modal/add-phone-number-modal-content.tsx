@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FaArrowRight } from "react-icons/fa";
 import * as z from "zod";
+import { Choose, Otherwise, When } from "../../conditional-rendering";
 import { Button } from "../../ui/button";
 import { DrawerFooter } from "../../ui/drawer";
 import DrawerModalContentContainer from "../../ui/drawer-modal/drawer-modal-content-container";
@@ -62,73 +63,79 @@ const AddPhoneNumberModalContent = () => {
             className="flex flex-col gap-4"
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            {validateViewVisible && (
-              <div className="flex flex-col items-center gap-2">
+            <Choose>
+              <When condition={validateViewVisible}>
+                <div className="flex flex-col items-center gap-2">
+                  <FormField
+                    control={form.control}
+                    name="confirmationCode"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col items-center">
+                        <FormControl>
+                          <InputOTP maxLength={6} {...field}>
+                            <InputOTPGroup>
+                              <InputOTPSlot index={0} />
+                              <InputOTPSlot index={1} />
+                              <InputOTPSlot index={2} />
+                            </InputOTPGroup>
+                            <InputOTPSeparator />
+                            <InputOTPGroup>
+                              <InputOTPSlot index={3} />
+                              <InputOTPSlot index={4} />
+                              <InputOTPSlot index={5} />
+                            </InputOTPGroup>
+                          </InputOTP>
+                        </FormControl>
+                        <FormDescription>
+                          {t(
+                            "a-code-has-been-sent-to-validate-your-phone-number",
+                            {
+                              phoneNumber: form.getValues("phone")
+                            }
+                          )}
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </When>
+
+              <Otherwise>
                 <FormField
                   control={form.control}
-                  name="confirmationCode"
+                  name="phone"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col items-center">
+                    <FormItem>
+                      <FormLabel>{t("phone-number")}</FormLabel>
                       <FormControl>
-                        <InputOTP maxLength={6} {...field}>
-                          <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                          </InputOTPGroup>
-                          <InputOTPSeparator />
-                          <InputOTPGroup>
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
-                          </InputOTPGroup>
-                        </InputOTP>
+                        <Input
+                          placeholder={t("phone-number")}
+                          type="number"
+                          {...field}
+                        />
                       </FormControl>
-                      <FormDescription>
-                        {t(
-                          "a-code-has-been-sent-to-validate-your-phone-number",
-                          {
-                            phoneNumber: form.getValues("phone")
-                          }
-                        )}
-                      </FormDescription>
+                      <FormMessage messageFactory={(message) => t(message)} />
                     </FormItem>
                   )}
                 />
-              </div>
-            )}
-
-            {!validateViewVisible && (
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("phone-number")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t("phone-number")}
-                        type="number"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage messageFactory={(message) => t(message)} />
-                  </FormItem>
-                )}
-              />
-            )}
+              </Otherwise>
+            </Choose>
           </form>
         </Form>
       </DrawerModalContentContainer>
       <DrawerFooter>
-        {validateViewVisible ? (
-          <Button className="w-full">{t("validate")}</Button>
-        ) : (
-          <Button className="group w-full" onClick={onNextStep} type="button">
-            {t("to-validation")}
-            <FaArrowRight className="ml-2 transition group-hover:translate-x-1" />
-          </Button>
-        )}
+        <Choose>
+          <When condition={validateViewVisible}>
+            <Button className="w-full">{t("validate")}</Button>
+          </When>
+
+          <Otherwise>
+            <Button className="group w-full" onClick={onNextStep} type="button">
+              {t("to-validation")}
+              <FaArrowRight className="ml-2 transition group-hover:translate-x-1" />
+            </Button>
+          </Otherwise>
+        </Choose>
       </DrawerFooter>
     </>
   );

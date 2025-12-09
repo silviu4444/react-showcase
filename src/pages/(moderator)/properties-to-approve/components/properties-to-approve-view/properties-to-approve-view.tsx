@@ -6,6 +6,7 @@ import PropertyToApproveItem from "../property-to-approve-item/property-to-appro
 const PropertiesToApproveView = () => {
   const { data, isPending, isError, refetch } =
     useGetPropertiesToApproveQuery();
+
   if (isPending) {
     return <Spinner center />;
   }

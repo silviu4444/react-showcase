@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import useDateFormat from "@/shared/hooks/use-date-format";
 import { useNavigate } from "react-router-dom";
 import { RouterPages } from "@/shared/constants/router.constants";
+import { Choose, When } from "@/shared/components/conditional-rendering";
 
 type NotificationItemProps = {
   notification: NotificationDto;
@@ -31,17 +32,28 @@ const NotificationItem: FC<NotificationItemProps> = ({ notification }) => {
       onClick={onNotificationClick}
     >
       <div className="text-sm">
-        {notification.type === NotificationTypeEnum.PROPERTY_APPROVAL && (
-          <span>{t("a-new-property-has-been-added-updated")}</span>
-        )}
-        {notification.type ===
-          NotificationTypeEnum.NEW_PROPERTY_IN_SAVED_ZONE && (
-          <span>
-            {t(
-              "one-ore-more-properties-have-been-recently-added-to-your-favorite-zone"
-            )}
-          </span>
-        )}
+        <Choose>
+          <When
+            condition={
+              notification.type === NotificationTypeEnum.PROPERTY_APPROVAL
+            }
+          >
+            <span>{t("a-new-property-has-been-added-updated")}</span>
+          </When>
+
+          <When
+            condition={
+              notification.type ===
+              NotificationTypeEnum.NEW_PROPERTY_IN_SAVED_ZONE
+            }
+          >
+            <span>
+              {t(
+                "one-ore-more-properties-have-been-recently-added-to-your-favorite-zone"
+              )}
+            </span>
+          </When>
+        </Choose>
       </div>
       <span className="text-end text-sm text-muted-foreground">
         {format({ date: notification.createdAt, format: "dd MMMM yyyy HH:mm" })}

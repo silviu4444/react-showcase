@@ -26,7 +26,8 @@ The app includes three distinct roles:
 ## Tech Stack
 - **React** (main framework)
 - **React Router**
-- **SocketIo**
+- **Socket.io**
+- **Framer Motion**
 - **Shadcn/UI**
 - **Axios**
 - **Zustand**
